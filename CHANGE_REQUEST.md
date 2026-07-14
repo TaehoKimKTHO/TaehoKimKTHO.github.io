@@ -81,6 +81,13 @@
 - Execution-ready items: nav highlight bug, games copy/UX polish, metadata, debug cleanup
 - Blocked items: 실제 프로필/경력/프로젝트/연락처의 사실 기반 작성
 
+## Latest Loop Outcome
+
+- PASSED: `CR-001`, `CR-008`, `CR-009`, `CR-010`
+- PARTIALLY ADDRESSED: `CR-003`의 정보 우선순위와 한영 병기 정리
+- HITL_REQUIRED: `CR-002`, `CR-003`, `CR-004`, `CR-005`, `CR-006`, `CR-007`, `CR-011`
+- Note: 사실 기반 프로필/경력/프로젝트/연락처는 원문 자료가 없어 샘플 또는 보류 상태를 유지한다. 게임은 현재 점수 표시와 5점 단위 2배 속도 규칙을 적용했다.
+
 ## Change Item Summary
 
 | ID | 요청 원문 | 요청 요약 | 분류 | 현재 동작 | 기대 동작 | 위험도 | HITL |
@@ -372,4 +379,3 @@
 9. `L-009` OG 태그와 파비콘 추가
 10. `L-010` 디버그 브리지 제거
 11. `L-011` 최종 문안 정리 및 placeholder purge
-

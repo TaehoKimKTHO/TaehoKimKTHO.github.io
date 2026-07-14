@@ -8,6 +8,9 @@ const sectionIds = navLinks
 const sections = sectionIds
   .map((id) => document.querySelector(id))
   .filter(Boolean);
+const contentSections = sections.filter((section) => section?.id !== 'home');
+let navLockUntil = 0;
+let activeSectionHash = window.location.hash && window.location.hash.startsWith('#') ? window.location.hash : '#home';
 
 if (yearElement) {
   yearElement.textContent = String(new Date().getFullYear());
@@ -15,6 +18,7 @@ if (yearElement) {
 
 function setActiveLink(hash) {
   const targetHash = hash && hash.startsWith('#') ? hash : '#home';
+  activeSectionHash = targetHash;
 
   navLinks.forEach((link) => {
     const active = link.getAttribute('href') === targetHash;
@@ -43,6 +47,8 @@ if (navToggle && siteNav) {
 
   navLinks.forEach((link) => {
     link.addEventListener('click', () => {
+      navLockUntil = Date.now() + 900;
+      setActiveLink(link.getAttribute('href'));
       if (window.matchMedia('(max-width: 820px)').matches) {
         setNavOpen(false);
       }
@@ -61,16 +67,24 @@ document.addEventListener('keydown', (event) => {
 });
 
 function getCurrentSection() {
-  const midpoint = window.innerHeight * 0.35;
+  if (Date.now() < navLockUntil) {
+    return activeSectionHash;
+  }
 
-  for (const section of sections) {
-    const rect = section.getBoundingClientRect();
-    if (rect.top <= midpoint && rect.bottom >= midpoint) {
-      return `#${section.id}`;
+  if (window.scrollY < 160) {
+    return '#home';
+  }
+
+  const activationLine = window.scrollY + window.innerHeight * 0.32;
+  let currentHash = activeSectionHash === '#home' ? '#about' : activeSectionHash;
+
+  for (const section of contentSections) {
+    if (section.offsetTop <= activationLine - 100) {
+      currentHash = `#${section.id}`;
     }
   }
 
-  return window.location.hash || '#home';
+  return currentHash;
 }
 
 let scrollTicking = false;
@@ -124,6 +138,8 @@ class SnakeGame {
     this.boundPointerDown = this.onPointerDown.bind(this);
     this.boundPointerUp = this.onPointerUp.bind(this);
     this.cells = [];
+    this.baseDelay = 220;
+    this.minDelay = 40;
   }
 
   init() {
@@ -261,7 +277,7 @@ class SnakeGame {
       this.stopLoop();
       this.setStatus('Paused');
     } else {
-    this.setStatus('Playing');
+      this.setStatus('Playing');
       this.scheduleNextTick();
     }
     this.updateButtons();
@@ -294,7 +310,9 @@ class SnakeGame {
   }
 
   getDelay() {
-    return Math.max(78, 145 - Math.floor(this.score / 4) * 5);
+    const speedTier = Math.floor(this.score / 5);
+    const delay = this.baseDelay / (2 ** speedTier);
+    return Math.max(this.minDelay, Math.round(delay));
   }
 
   step() {
@@ -551,80 +569,3 @@ const game = new SnakeGame({
 });
 
 game.init();
-
-document.addEventListener('snake:test', (event) => {
-  const detail = event?.detail;
-  if (!detail || detail.channel !== 'snake-test') {
-    return;
-  }
-
-  const action = detail.action;
-  const payload = detail.payload || {};
-  let result = null;
-
-  switch (action) {
-    case 'state':
-      result = {
-        running: game.running,
-        paused: game.paused,
-        gameOver: game.gameOver,
-        score: game.score,
-        highScore: game.highScore,
-        snakeLength: game.snake.length,
-        direction: game.direction,
-        nextDirection: game.nextDirection,
-        status: document.querySelector('#game-status')?.textContent || '',
-        scoreText: document.querySelector('#score-value')?.textContent || '',
-        highScoreText: document.querySelector('#high-score-value')?.textContent || '',
-      };
-      break;
-    case 'reset':
-      game.resetState();
-      game.updateHud();
-      game.setStatus('Ready');
-      game.render();
-      result = 'ok';
-      break;
-    case 'set-state':
-      Object.assign(game, payload);
-      game.updateHud();
-      game.updateButtons();
-      game.render();
-      result = 'ok';
-      break;
-    case 'start':
-      game.startGame();
-      result = 'ok';
-      break;
-    case 'pause':
-      game.togglePause();
-      result = 'ok';
-      break;
-    case 'restart':
-      game.restartGame();
-      result = 'ok';
-      break;
-    case 'step':
-      game.step();
-      result = 'ok';
-      break;
-    case 'direction':
-      game.handleDirection(payload.direction);
-      result = 'ok';
-      break;
-    case 'pointer-swipe':
-      game.onPointerDown({ clientX: payload.fromX, clientY: payload.fromY, pointerId: 1 });
-      game.onPointerUp({ clientX: payload.toX, clientY: payload.toY, pointerId: 1 });
-      result = 'ok';
-      break;
-    case 'spawn-food':
-      result = game.spawnFood();
-      break;
-    default:
-      result = { error: 'unknown action' };
-  }
-
-  document.documentElement.dataset.snakeTestResult = JSON.stringify(result);
-});
-
-document.documentElement.dataset.js = 'ready';

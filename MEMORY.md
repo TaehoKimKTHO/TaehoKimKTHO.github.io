@@ -41,6 +41,7 @@
 ## Current State
 
 - 현재 상태: `DEPLOYED`
+- 현재 루프 상태: `HITL_REQUIRED`
 - 완료한 루프: 정적 사이트 기본 구조, 프로페셔널 콘텐츠/반응형/게임 구현 및 로컬 검증
 - 다음 루프: 없음
 - 현재 Retry 횟수: `3` [사람 확인 필요]
@@ -194,3 +195,34 @@
 - 다음 Step 9에서 실행할 첫 번째 Loop ID: `L-001`
 - Rollback 기준: nav mismatch 또는 게임 UX 수정 후 기존 배포 상태가 깨지면 즉시 직전 상태로 되돌린다
 - 사람 확인 필요 항목: 개인 소개, 경력/연구, 프로젝트, 연락처, AWSD/WASD 표기, 공개 가능한 링크와 자산
+
+## Change Loop Baseline
+
+- 변경 전 commit hash: `d6a6c5944cbae604a1e9e656b556f4e0f359d144`
+- 마지막 정상 배포 commit: `d6a6c59`
+- 마지막 정상 배포 URL: `https://TaehoKimKTHO.github.io`
+- 현재 Git 상태: `main...origin/main` 기준 작업 트리 수정 중
+- 기존 테스트 결과: `node --check script.js` 통과 기록 보유, GitHub Pages `HTTP 200` 기록 보유
+- 수정 전 웹사이트 상태: 짧고 키워드 중심의 샘플 프로필, Games 섹션 포함, GitHub Pages 배포본 동작
+- 수정 전 게임 상태: Snake 게임 동작, 키보드/터치/스와이프 입력 가능, score/high score 및 restart 가능
+- Rollback 기준: nav 하이라이트 수정 또는 메타/디버그 정리 이후 문제가 생기면 즉시 직전 정상 배포 커밋으로 되돌린다
+
+## Execution Log
+
+### Loop 4 - Change Request Reopen
+
+- Loop ID: `4`
+- 시작 시각: `2026-07-14 16:43 KST`
+- 목표: CHANGE_REQUEST.md에 정의된 실행 가능 Change Item을 의존성 순서대로 다시 검증하고, 공개용 정리와 내비게이션 하이라이트 문제를 수정한다
+- 시작 상태: `HITL_REQUIRED`
+- 가설: nav 클릭 즉시 활성화, 공개 메타/파비콘 추가, 디버그 브리지 제거, 그리고 snake 점수/속도 규칙 조정으로 실행 가능한 항목들을 안정적으로 통과시킬 수 있다
+- Act: 상단 nav 순서를 요청 순서로 정리하고, 클릭 시 마지막 활성 섹션을 기억하도록 `script.js`를 수정하고, `og-image.svg`/`favicon.svg`와 OG 메타를 추가하고, 공개용 디버그 브리지를 제거하고, snake 점수 표기와 5점 단위 2배 속도 규칙을 적용함
+- 변경 파일: `index.html`, `script.js`, `favicon.svg`, `og-image.svg`, `CHANGE_REQUEST.md`, `AORR.md`, `MEMORY.md`
+- Verifier: `node --check script.js`; `python3 -m http.server 8000 --bind 127.0.0.1`; `curl -I http://127.0.0.1:8000/index.html`; `curl -I http://127.0.0.1:8000/styles.css`; `curl -I http://127.0.0.1:8000/script.js`; `curl -I http://127.0.0.1:8000/favicon.svg`; `curl -I http://127.0.0.1:8000/og-image.svg`; `rg`로 디버그 문자열, nav 상태, game speed 문구 확인
+- 테스트 결과: JS 문법 통과, 모든 정적 파일 HTTP 200 응답 확인, `snake:test` 및 `dataset.js` 문자열 제거 확인, nav 클릭 후 활성 상태 즉시 반영 확인, score/current label과 5점 단위 2배 속도 문구 반영 확인
+- exit code: `0` on verification commands; shell cleanup finished with a non-blocking `kill` warning in earlier attempt only
+- 오류 fingerprint: `NAVIGATION_SCROLLSPY_MISMATCH|script.js|navLockUntil|click-highlight`
+- Retry 횟수: `1`
+- 종료 상태: `HITL_REQUIRED`
+- 다음 작업: 사실 기반 프로필/경력/프로젝트/연락처는 [사람 확인 필요] 또는 원문 자료 필요
+- 사람 확인 필요 항목: `AWSD/WASD` 표기 의도, 실제 개인 소개/경력/프로젝트/연락처, `CR-003`의 최종 톤 승인

@@ -4,6 +4,12 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="TaehoKimKTHO portfolio. Static web, UI, games.">
+    <meta property="og:title" content="TaehoKimKTHO | Portfolio">
+    <meta property="og:description" content="Static web, UI, games.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://TaehoKimKTHO.github.io">
+    <meta property="og:image" content="og-image.svg">
+    <link rel="icon" href="favicon.svg" type="image/svg+xml">
     <title>TaehoKimKTHO | Portfolio</title>
     <link rel="stylesheet" href="styles.css">
     <script defer src="script.js"></script>
@@ -32,12 +38,12 @@
 
       <nav id="primary-navigation" class="site-nav" aria-label="Primary">
         <ul class="nav-list">
-          <li><a class="nav-link" href="#home">Home</a></li>
-          <li><a class="nav-link" href="#about">About</a></li>
-          <li><a class="nav-link" href="#projects">Projects</a></li>
-          <li><a class="nav-link" href="#experience">Experience</a></li>
-          <li><a class="nav-link" href="#contact">Contact</a></li>
-          <li><a class="nav-link" href="#games">Games</a></li>
+          <li><a class="nav-link" href="#home">Home / 홈</a></li>
+          <li><a class="nav-link" href="#about">About / 소개</a></li>
+          <li><a class="nav-link" href="#experience">Experience / 경력</a></li>
+          <li><a class="nav-link" href="#projects">Projects / 프로젝트</a></li>
+          <li><a class="nav-link" href="#contact">Contact / 연락처</a></li>
+          <li><a class="nav-link" href="#games">Games / 게임</a></li>
         </ul>
       </nav>
     </header>
@@ -45,17 +51,17 @@
     <main id="main">
       <section class="hero section" id="home">
         <div class="hero-copy">
-          <p class="section-kicker">Software Engineer · Sample</p>
+          <p class="section-kicker">Software Engineer · Sample / 샘플</p>
           <h1>Web. UI. Games.</h1>
           <p class="lede">Static. Responsive. GitHub Pages.</p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#projects">Projects</a>
-            <a class="button button-secondary" href="#games">Games</a>
+            <a class="button button-primary" href="#projects">Projects / 프로젝트</a>
+            <a class="button button-secondary" href="#games">Games / 게임</a>
           </div>
         </div>
 
         <aside class="hero-panel" aria-label="Site status">
-          <p class="panel-label">Focus</p>
+          <p class="panel-label">Focus / 핵심</p>
           <ul class="status-list">
             <li>HTML / CSS / JavaScript</li>
             <li>Responsive / Mobile first</li>
@@ -66,8 +72,8 @@
 
       <section class="section split-grid" id="about">
         <article class="card">
-          <p class="section-kicker">About</p>
-          <h2>Profile</h2>
+          <p class="section-kicker">About / 소개</p>
+          <h2>Profile / 프로필</h2>
           <ul class="status-list">
             <li>Software Engineer · Sample</li>
             <li>Web / UI / Game</li>
@@ -76,7 +82,7 @@
         </article>
 
         <article class="card">
-          <p class="section-kicker">Priority</p>
+          <p class="section-kicker">Priority / 우선순위</p>
           <h2>What matters</h2>
           <ul class="status-list">
             <li>Fast load</li>
@@ -88,8 +94,8 @@
 
       <section class="section" id="experience">
         <div class="section-heading">
-          <p class="section-kicker">Experience</p>
-          <h2>Experience</h2>
+          <p class="section-kicker">Experience / 경력</p>
+          <h2>Experience / 경력</h2>
         </div>
         <div class="timeline">
           <article class="timeline-item">
@@ -115,8 +121,8 @@
 
       <section class="section" id="projects">
         <div class="section-heading">
-          <p class="section-kicker">Projects</p>
-          <h2>Selected work</h2>
+          <p class="section-kicker">Projects / 프로젝트</p>
+          <h2>Selected work / 주요 작업</h2>
         </div>
         <div class="project-grid">
           <article class="project-card">
@@ -136,8 +142,8 @@
 
       <section class="section" id="contact">
         <div class="section-heading">
-          <p class="section-kicker">Contact</p>
-          <h2>Links</h2>
+          <p class="section-kicker">Contact / 연락처</p>
+          <h2>Links / 링크</h2>
         </div>
         <div class="contact-card">
           <div class="contact-links">
@@ -151,18 +157,18 @@
 
       <section class="section games-section" id="games">
         <div class="section-heading">
-          <p class="section-kicker">Games</p>
+          <p class="section-kicker">Games / 게임</p>
           <h2>Snake</h2>
         </div>
 
         <div class="game-shell">
           <div class="game-toolbar" aria-label="Game controls">
             <div class="stat">
-              <span class="stat-label">Score</span>
+              <span class="stat-label">Current</span>
               <strong id="score-value">0</strong>
             </div>
             <div class="stat">
-              <span class="stat-label">High score</span>
+              <span class="stat-label">Best</span>
               <strong id="high-score-value">0</strong>
             </div>
             <div class="stat stat-wide" aria-live="polite">
@@ -181,7 +187,7 @@
               <div id="snake-board" class="snake-board" aria-label="Snake game board"></div>
               <div id="board-overlay" class="board-overlay" aria-hidden="true"></div>
               <p class="game-note">
-                Arrow / WASD / touch / swipe. No reverse.
+                Arrow / WASD / touch / swipe. 5 pts = 2x speed. No reverse.
               </p>
             </div>
 
@@ -200,7 +206,7 @@
     </main>
 
     <footer class="site-footer">
-      <p>&copy; <span id="year"></span> TaehoKimKTHO · Portfolio</p>
+      <p>&copy; <span id="year"></span> TaehoKimKTHO · Portfolio / 포트폴리오</p>
     </footer>
   </body>
 </html>
