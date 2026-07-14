@@ -136,7 +136,7 @@ class SnakeGame {
     this.resetState();
     this.render();
     this.updateHud();
-    this.setStatus('Ready to play');
+    this.setStatus('Ready');
     this.board.addEventListener('pointerdown', this.boundPointerDown);
     this.board.addEventListener('pointerup', this.boundPointerUp);
     this.board.addEventListener('pointercancel', this.boundPointerUp);
@@ -227,7 +227,7 @@ class SnakeGame {
 
     this.running = true;
     this.paused = false;
-    this.setStatus('Running');
+    this.setStatus('Playing');
     this.updateButtons();
     this.scheduleNextTick();
   }
@@ -261,7 +261,7 @@ class SnakeGame {
       this.stopLoop();
       this.setStatus('Paused');
     } else {
-      this.setStatus('Running');
+    this.setStatus('Playing');
       this.scheduleNextTick();
     }
     this.updateButtons();
@@ -269,7 +269,7 @@ class SnakeGame {
 
   restartGame() {
     this.resetState();
-    this.setStatus('Ready to play');
+    this.setStatus('Ready');
     this.updateHud();
     this.render();
     this.startGame();
@@ -471,7 +471,7 @@ class SnakeGame {
 
   updateButtons() {
     if (this.startButton) {
-      this.startButton.textContent = this.gameOver ? 'Start' : this.running ? 'Running' : 'Start';
+      this.startButton.textContent = 'Play';
     }
 
     if (this.pauseButton) {
@@ -479,7 +479,7 @@ class SnakeGame {
     }
 
     if (this.touchStartButton) {
-      this.touchStartButton.textContent = this.paused ? 'Resume' : this.gameOver ? 'Restart' : 'Start / Pause';
+      this.touchStartButton.textContent = this.paused ? 'Resume' : this.gameOver ? 'Reset' : 'Play / Pause';
     }
   }
 
@@ -517,7 +517,7 @@ class SnakeGame {
 
     if (this.boardOverlay) {
       if (this.gameOver) {
-        this.boardOverlay.textContent = 'Game Over\nPress Restart to try again';
+      this.boardOverlay.textContent = 'Game Over\nReset to play';
       } else if (this.paused) {
         this.boardOverlay.textContent = 'Paused';
       } else {
@@ -581,7 +581,7 @@ document.addEventListener('snake:test', (event) => {
     case 'reset':
       game.resetState();
       game.updateHud();
-      game.setStatus('Ready to play');
+      game.setStatus('Ready');
       game.render();
       result = 'ok';
       break;

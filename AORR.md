@@ -259,6 +259,38 @@
 
 가장 안전한 첫 번째 루프는 `저장소 및 기존 파일 확인`이다.
 
+## 12. Change Request Loop Plan
+
+### Change Request Overview
+
+- Change Request ID: `CR-20260714-01`
+- Baseline commit: `723eee12699f5641ff755d6b8e3a598674439367`
+- Baseline URL: `https://TaehoKimKTHO.github.io`
+- Overall request state: `HITL_REQUIRED`
+- Current blocker: 실제 프로필/경력/프로젝트/연락처의 검증 가능한 사실 자료가 없음
+
+### Loop Plan Table
+
+| Loop ID | 연결된 Change Item | Target | 입력 자료 | Act | Observe | Reason | Verifier | 완료 기준 | Retry 정책 | Stop 조건 | HITL 조건 | 예상 수정 파일 | 선행 Loop | 다음 Loop | 상태 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| L-001 | 전체 | 기준선 재확인과 요청 매핑 | AORR.md, MEMORY.md, 현재 git 상태, 배포 URL, 변경 요청 원문 | 현재 상태를 다시 확인하고 Change Item과 의존성을 정리한다 | git status, remote, last deploy, reference file availability | CHANGE_INTAKE | `git status`, `git remote -v`, `curl -I -L`, `rg --files` | 기준선과 change map이 문서화됨 | 최대 1회 | 기준선 불일치, 권한 문제, 자료 누락 확인 | 개인 자료 누락 확인 | `CHANGE_REQUEST.md`, `AORR.md`, `MEMORY.md` | 없음 | L-002 | CHANGE_INTAKE |
+| L-002 | CR-001 | 상단 메뉴 하이라이트 mismatch 수정 | 현재 nav 구조, scrollspy 로직 | 메뉴 활성 상태를 클릭/스크롤 기준에 맞게 조정한다 | 브라우저 클릭, hash 이동, scrollspy, 모바일 메뉴 | BUG 우선 처리 | 브라우저, `rg`, 필요 시 로컬 서버 | 메뉴 클릭과 하이라이트가 일관됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 회귀 발생 | 없음 | `script.js`, `styles.css` | L-001 | L-003 | READY |
+| L-003 | CR-003 | Hero/언어 톤/정보 우선순위 정리 | 사용자 승인된 브랜드 톤, 언어 정책 | Hero와 섹션 우선순위를 재구성한다 | 문장 톤, 섹션 순서, 모바일 가독성 | IA 및 UI_UX | 브라우저, 로컬 서버 | 톤과 구조가 일관됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 과한 재작성 | [사람 확인 필요] 브랜드 방향 | `index.html`, `styles.css` | L-002 | L-004~L-007 | HITL_REQUIRED |
+| L-004 | CR-004 | About 사실 기반 교체 | 검증된 소개 문구 | About 섹션을 실제 소개로 교체한다 | 문장, 줄바꿈, 모바일 렌더링 | CONTENT | 브라우저, 로컬 서버 | 플레이스홀더 제거 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 사실 미검증 | [사람 확인 필요] 소개 사실 | `index.html` | L-003 | L-005 | HITL_REQUIRED |
+| L-005 | CR-005 | Experience 사실 기반 교체 | 검증된 경력/연구 사실 | 타임라인을 실제 경력으로 교체한다 | 연도, 기관, 성과, 모바일 렌더링 | CONTENT | 브라우저, 로컬 서버 | 실제 경력 항목이 표시됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 사실 미검증 | [사람 확인 필요] 경력/연구 사실 | `index.html` | L-004 | L-006 | HITL_REQUIRED |
+| L-006 | CR-006 | Projects 사실 기반 교체 | 검증된 프로젝트 사실과 링크 | 프로젝트 카드를 실제 사례로 교체한다 | 제목, 설명, 링크, 카드 정렬 | CONTENT | 브라우저, 링크 응답 확인 | 실제 프로젝트 카드가 표시됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 사실 미검증 | [사람 확인 필요] 프로젝트 사실 | `index.html`, `styles.css` | L-005 | L-007 | HITL_REQUIRED |
+| L-007 | CR-007 | Contact 사실 기반 교체 | 공개 가능한 연락처와 링크 | Contact 카드에 실제 연락처를 넣는다 | 링크 클릭, 모바일 터치 영역 | CONTENT | 브라우저, 링크 응답 확인 | 공개 가능한 연락처가 표시됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 사실 미검증 | [사람 확인 필요] 공개 범위 | `index.html`, `styles.css` | L-006 | L-008 | HITL_REQUIRED |
+| L-008 | CR-002, CR-008 | Games 카피와 조작 UI 정리 | 게임 안내문, 버튼 라벨, 상태 텍스트 | 조작법, 상태 메시지, 터치 레이아웃을 정리한다 | 키보드/WASD, touch, swipe, state text | GAME_CONTROL / UI_UX | 브라우저, 로컬 서버, 콘솔 | 조작/상태 문구가 즉시 이해됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 조작 회귀 | AWSD/WASD 표기 의도 | `index.html`, `styles.css`, `script.js` | L-007 | L-009 | READY |
+| L-009 | CR-009 | OG 태그와 파비콘 추가 | 공유 미리보기 자산 | head 메타와 아이콘을 추가한다 | head, 탭 아이콘, 공유 미리보기 | UI_UX / CONTENT | 브라우저, HTML 검사 | 메타와 파비콘이 존재함 | 하나의 원인만 3회까지 | 동일 fingerprint 2회 | 대표 이미지/아이콘 | `index.html`, `assets/*` | L-008 | L-010 | READY |
+| L-010 | CR-010 | 디버그 브리지 제거 | 현재 script.js | 테스트 브리지와 진단 표식을 비활성화한다 | 검색 결과, 브라우저 콘솔 | REFACTOR / TEST | `rg`, 브라우저, 로컬 서버 | 공개 코드에서 디버그 훅이 제거됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회 | 공개 검증 대안 | `script.js` | L-009 | L-011 | READY |
+| L-011 | CR-011 | 최종 문안 정리 | 확정된 콘텐츠와 검토 결과 | placeholder와 중복 표현을 제거한다 | 전역 텍스트 검색, 브라우저 읽기 검수 | CONTENT / UI_UX | `rg`, 브라우저, 로컬 서버 | `[사람 확인 필요]` 표기가 정리됨 | 하나의 원인만 3회까지 | 동일 fingerprint 2회, 사실 미확정 | 콘텐츠 확정 필요 | `index.html`, `AORR.md`, `MEMORY.md` | L-010 | DEPLOY_READY | HITL_REQUIRED |
+
+### State Notes
+
+- 이 요청은 사실 기반 콘텐츠가 핵심이므로 전체 상태는 `HITL_REQUIRED`다.
+- 코드로 바로 들어갈 수 있는 루프는 `L-002`, `L-008`, `L-009`, `L-010`이다.
+- 사실 검증이 필요한 루프(`L-003`~`L-007`, `L-011`)는 자료가 들어오기 전까지 보류한다.
+
 - 이유
   - 현재 저장소는 초기 상태이므로 구조 파악 비용이 낮다.
   - 개인 콘텐츠나 게임 규칙처럼 사람 확인이 필요한 항목을 먼저 분리할 수 있다.

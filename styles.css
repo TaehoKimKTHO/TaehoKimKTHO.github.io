@@ -281,12 +281,12 @@ main {
 }
 
 .hero h1 {
-  max-width: 13ch;
+  max-width: 16ch;
   font-size: clamp(2.35rem, 5vw, 5rem);
 }
 
 .lede {
-  max-width: 58ch;
+  max-width: 36ch;
   margin: 1rem 0 0;
   color: var(--muted);
   font-size: 1.06rem;
@@ -334,8 +334,20 @@ main {
 
 .status-list {
   margin: 0.75rem 0 0;
-  padding-left: 1.15rem;
+  padding: 0;
+  display: grid;
+  gap: 0.5rem;
+  list-style: none;
   color: var(--text);
+}
+
+.status-list li {
+  width: fit-content;
+  max-width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
 }
 
 .split-grid,

@@ -179,3 +179,18 @@
 
 - 현재 저장소에는 `AORR.md`와 `README.md`가 확인되었다.
 - 정적 사이트 구현은 루트 파일 계약부터 시작했고, 현재는 GitHub Pages 배포까지 완료되었다.
+
+## Change Request Intake
+
+- 새로운 Change Request ID: `CR-20260714-01`
+- 기준선 commit: `723eee12699f5641ff755d6b8e3a598674439367`
+- 기준선 URL: `https://TaehoKimKTHO.github.io`
+- 현재 상태: `HITL_REQUIRED`
+- 사용자 요청 요약: nav highlight 불일치 수정, 게임 조작법 강조, 프로필/경력/프로젝트/연락처의 사실 기반 교체, 한국어 또는 한영 병기, Hero/IA 재정리, Games 카피와 조작 UI 정리, OG/favicon, 디버그 훅 제거, 최종 문안 정리
+- 참고 자료: `AORR.md`, `MEMORY.md`, `index.html`, `styles.css`, `script.js`, `README.md`
+- 참고 자료 확인 결과: 현재 디렉토리와 저장소 전체에서 CV/PDF/문서 파일을 찾지 못함 [사람 확인 필요]
+- 새 완료 기준: 사실 검증이 필요한 항목은 자료 확보 후 반영되고, 나머지는 UX/구조/메타/디버그 정리까지 완료됨
+- 루프 실행 순서: `L-001` -> `L-002` -> `L-003` -> `L-004` -> `L-005` -> `L-006` -> `L-007` -> `L-008` -> `L-009` -> `L-010` -> `L-011`
+- 다음 Step 9에서 실행할 첫 번째 Loop ID: `L-001`
+- Rollback 기준: nav mismatch 또는 게임 UX 수정 후 기존 배포 상태가 깨지면 즉시 직전 상태로 되돌린다
+- 사람 확인 필요 항목: 개인 소개, 경력/연구, 프로젝트, 연락처, AWSD/WASD 표기, 공개 가능한 링크와 자산
